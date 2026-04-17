@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+
+  sse:
+    container_name: sse
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile_with_build
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_ACTIVE_PROFILE: local
+    networks:
+      - app-tier
+    restart: always
+    depends_on:
+      - mysqldb
+
+networks:
+  app-tier:
+    external: true
+    name: app-tier
