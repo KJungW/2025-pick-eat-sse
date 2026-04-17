@@ -1,4 +1,4 @@
-package com.pickeat.sse.domain.emitter;
+package com.pickeat.sse.domain.subscriber;
 
 import com.pickeat.sse.domain.event.EventType;
 import com.pickeat.sse.domain.event.PickeatEvent;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class EmitterManager {
+public class PickeatSubscriberManager {
 
     private final Map<String, Map<String, SseEmitter>> emitters = new ConcurrentHashMap<>();
 

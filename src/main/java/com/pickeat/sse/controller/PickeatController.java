@@ -1,7 +1,7 @@
 package com.pickeat.sse.controller;
 
-import com.pickeat.sse.domain.emitter.EmitterManager;
 import com.pickeat.sse.domain.event.EventType;
+import com.pickeat.sse.domain.subscriber.PickeatSubscriberManager;
 import com.pickeat.sse.global.auth.participant.ParticipantInPickeat;
 import com.pickeat.sse.global.auth.participant.ParticipantPrincipal;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequiredArgsConstructor
 public class PickeatController {
 
-    private final EmitterManager emitterManager;
+    private final PickeatSubscriberManager subscriberManager;
 
     @GetMapping(value = "/pickeats", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter connect(
@@ -27,7 +27,7 @@ public class PickeatController {
         String pickeatCode = principal.pickeatCode();
         String participantCode = principal.participantCode();
         SseEmitter emitter = makeSseEmitter(pickeatCode, participantCode);
-        emitterManager.register(pickeatCode, participantCode, emitter);
+        subscriberManager.register(pickeatCode, participantCode, emitter);
         return emitter;
     }
 
@@ -36,14 +36,14 @@ public class PickeatController {
             @ParticipantInPickeat ParticipantPrincipal principal
     ) {
         String participantCode = principal.participantCode();
-        emitterManager.remove(principal.pickeatCode(), principal.participantCode());
+        subscriberManager.remove(principal.pickeatCode(), principal.participantCode());
     }
 
     private SseEmitter makeSseEmitter(String pickeatCode, String participantCode) {
         SseEmitter emitter = new SseEmitter(1800000L);
-        emitter.onCompletion(() -> emitterManager.remove(pickeatCode, participantCode));
-        emitter.onTimeout(() -> emitterManager.remove(pickeatCode, participantCode));
-        emitter.onError((e) -> emitterManager.remove(pickeatCode, participantCode));
+        emitter.onCompletion(() -> subscriberManager.remove(pickeatCode, participantCode));
+        emitter.onTimeout(() -> subscriberManager.remove(pickeatCode, participantCode));
+        emitter.onError((e) -> subscriberManager.remove(pickeatCode, participantCode));
 
         try {
             emitter.send(SseEmitter.event()
@@ -52,7 +52,7 @@ public class PickeatController {
                     .reconnectTime(3000));
         } catch (IOException e) {
             emitter.complete();
-            emitterManager.remove(pickeatCode, participantCode);
+            subscriberManager.remove(pickeatCode, participantCode);
         }
 
         return emitter;
