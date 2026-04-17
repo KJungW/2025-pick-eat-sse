@@ -1,4 +1,4 @@
-package com.pickeat.sse.configuration;
+package com.pickeat.sse.global.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

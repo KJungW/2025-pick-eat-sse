@@ -1,4 +1,4 @@
-package com.pickeat.sse.configuration;
+package com.pickeat.sse.global.configuration;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;

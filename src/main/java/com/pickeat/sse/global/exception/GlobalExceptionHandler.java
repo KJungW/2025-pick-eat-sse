@@ -1,7 +1,7 @@
-package com.pickeat.sse.exception;
+package com.pickeat.sse.global.exception;
 
-import com.pickeat.sse.log.dto.ErrorLog;
-import com.pickeat.sse.log.dto.Log;
+import com.pickeat.sse.global.log.dto.ErrorLog;
+import com.pickeat.sse.global.log.dto.Log;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.pickeat.sse.log;
+package com.pickeat.sse.global.log;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

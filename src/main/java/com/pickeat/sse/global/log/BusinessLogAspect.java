@@ -1,7 +1,7 @@
-package com.pickeat.sse.log;
+package com.pickeat.sse.global.log;
 
 
-import com.pickeat.sse.log.dto.BusinessLog;
+import com.pickeat.sse.global.log.dto.BusinessLog;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.marker.Markers;
 import org.aspectj.lang.ProceedingJoinPoint;

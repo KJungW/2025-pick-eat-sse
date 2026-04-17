@@ -1,4 +1,4 @@
-package com.pickeat.sse.log.dto;
+package com.pickeat.sse.global.log.dto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;

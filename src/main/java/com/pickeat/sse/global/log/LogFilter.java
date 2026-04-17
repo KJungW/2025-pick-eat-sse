@@ -1,7 +1,7 @@
-package com.pickeat.sse.log;
+package com.pickeat.sse.global.log;
 
-import com.pickeat.sse.log.dto.RequestLog;
-import com.pickeat.sse.log.dto.ResponseLog;
+import com.pickeat.sse.global.log.dto.RequestLog;
+import com.pickeat.sse.global.log.dto.ResponseLog;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.pickeat.sse.configuration;
+package com.pickeat.sse.global.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
