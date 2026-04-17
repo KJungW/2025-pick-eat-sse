@@ -1,5 +1,7 @@
-package com.pickeat.sse.domain;
+package com.pickeat.sse.domain.emitter;
 
+import com.pickeat.sse.domain.event.EventType;
+import com.pickeat.sse.domain.event.PickeatEvent;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,7 +45,7 @@ public class EmitterManager {
         removeEmptyParticipants(participants, pickeatCode);
     }
 
-    public void broadcast(String pickeatCode, Object message) {
+    public void broadcast(String pickeatCode, PickeatEvent event) {
         Map<String, SseEmitter> participants = emitters.get(pickeatCode);
 
         if (participants == null || participants.isEmpty()) {
@@ -53,8 +55,8 @@ public class EmitterManager {
         participants.forEach((participantCode, emitter) -> {
             try {
                 emitter.send(SseEmitter.event()
-                        .name("VOTE_UPDATE")
-                        .data(message));
+                        .name(EventType.BUSINESS.toString())
+                        .data(event));
             } catch (IOException e) {
                 log.warn("메세지 전송 실패: [픽잇: {}] [참가자: {}]", pickeatCode, participantCode);
                 remove(pickeatCode, participantCode);

@@ -1,6 +1,7 @@
 package com.pickeat.sse.controller;
 
-import com.pickeat.sse.domain.EmitterManager;
+import com.pickeat.sse.domain.emitter.EmitterManager;
+import com.pickeat.sse.domain.event.EventType;
 import com.pickeat.sse.global.auth.participant.ParticipantInPickeat;
 import com.pickeat.sse.global.auth.participant.ParticipantPrincipal;
 import java.io.IOException;
@@ -39,14 +40,14 @@ public class PickeatController {
     }
 
     private SseEmitter makeSseEmitter(String pickeatCode, String participantCode) {
-        SseEmitter emitter = new SseEmitter(1800_000L);
+        SseEmitter emitter = new SseEmitter(1800000L);
         emitter.onCompletion(() -> emitterManager.remove(pickeatCode, participantCode));
         emitter.onTimeout(() -> emitterManager.remove(pickeatCode, participantCode));
         emitter.onError((e) -> emitterManager.remove(pickeatCode, participantCode));
 
         try {
             emitter.send(SseEmitter.event()
-                    .name("INIT")
+                    .name(EventType.INIT.toString())
                     .data("Connected!")
                     .reconnectTime(3000));
         } catch (IOException e) {
