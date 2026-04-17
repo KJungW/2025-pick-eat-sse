@@ -38,4 +38,7 @@ ENV JAVA_OPTS="-XX:InitialRAMPercentage=70.0 \
            -XX:ErrorFile=/logs/hs_err_pid%p.log \
            -Xlog:gc=info:file=/logs/gc.log:time,uptime:filecount=3,filesize=5M"
 
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -Dspring.profiles.active=${SPRING_ACTIVE_PROFILE:-dev} -jar /app/app.jar"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} \
+  -Dspring.config.location=classpath:/,classpath:/config/,classpath:/config/sse/ \
+  -Dspring.profiles.active=${SPRING_ACTIVE_PROFILE:-dev} \
+  -jar /app/app.jar"]
