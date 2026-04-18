@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -89,7 +90,10 @@ public class PickeatSubscriberManager {
 
         taskExecutor.execute(() -> {
             try {
+                Thread.sleep(ThreadLocalRandom.current().nextLong(5000)); // 부하 분산을 위한 지터 적용
                 subscriber.sendHeartbeat();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             } catch (IOException | IllegalStateException e) {
                 log.warn("하트 비트 실패로 인한 커넥션 드롭: [참가자: {}]", subscriber.getParticipantCode());
                 remove(subscriber.getPickeatCode(), subscriber.getParticipantCode());
