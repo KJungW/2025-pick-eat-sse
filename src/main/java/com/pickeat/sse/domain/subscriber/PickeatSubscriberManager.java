@@ -53,7 +53,7 @@ public class PickeatSubscriberManager {
         }
 
         subscribers.forEach((participantCode, subscriber) -> {
-            subscriber.updateEventSlot(event);
+            subscriber.registerEvent(event);
             processSend(pickeatCode, participantCode, subscriber);
         });
     }
@@ -65,7 +65,7 @@ public class PickeatSubscriberManager {
 
         taskExecutor.execute(() -> {
             try {
-                subscriber.sendEventsInSlotUntilEmpty();
+                subscriber.sendAllEventsUntilEmpty();
                 log.debug("전송 사이클 완료: [참가자: {}]", participantCode);
             } catch (IOException | IllegalStateException e) {
                 log.warn("전송 실패로 인한 커넥션 드롭: [참가자: {}]", participantCode);

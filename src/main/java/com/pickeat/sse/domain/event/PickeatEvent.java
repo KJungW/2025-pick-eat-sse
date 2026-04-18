@@ -18,4 +18,8 @@ public class PickeatEvent {
         this.meta = meta;
         this.content = content;
     }
+
+    public String getEventGroup() {
+        return meta.group();
+    }
 }
