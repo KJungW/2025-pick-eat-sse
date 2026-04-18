@@ -46,7 +46,7 @@ public class PickeatSubscriberManager {
         removeEmptySubscriberGroup(subscriberGroup, pickeatCode);
     }
 
-    public void broadcast(String pickeatCode, PickeatEvent event) {
+    public void broadcastEvent(String pickeatCode, PickeatEvent event) {
         Map<String, PickeatSubscriber> subscribers = subscriberStorage.get(pickeatCode);
         if (subscribers == null) {
             return;
@@ -54,11 +54,19 @@ public class PickeatSubscriberManager {
 
         subscribers.forEach((participantCode, subscriber) -> {
             subscriber.registerEvent(event);
-            processSend(pickeatCode, participantCode, subscriber);
+            processSendEvent(pickeatCode, participantCode, subscriber);
         });
     }
 
-    private void processSend(String pickeatCode, String participantCode, PickeatSubscriber subscriber) {
+    public void broadcastHeartbeat() {
+        for (Map<String, PickeatSubscriber> group : subscriberStorage.values()) {
+            for (PickeatSubscriber subscriber : group.values()) {
+                processSendHeartBeat(subscriber);
+            }
+        }
+    }
+
+    private void processSendEvent(String pickeatCode, String participantCode, PickeatSubscriber subscriber) {
         if (subscriber.isNowSending()) {
             return; // 이미 이벤트를 전송 중이면 종료
         }
@@ -70,6 +78,21 @@ public class PickeatSubscriberManager {
             } catch (IOException | IllegalStateException e) {
                 log.warn("전송 실패로 인한 커넥션 드롭: [참가자: {}]", participantCode);
                 remove(pickeatCode, participantCode);
+            }
+        });
+    }
+
+    private void processSendHeartBeat(PickeatSubscriber subscriber) {
+        if (subscriber.isNowSending()) {
+            return; // 이미 이벤트를 전송 중이면 종료
+        }
+
+        taskExecutor.execute(() -> {
+            try {
+                subscriber.sendHeartbeat();
+            } catch (IOException | IllegalStateException e) {
+                log.warn("하트 비트 실패로 인한 커넥션 드롭: [참가자: {}]", subscriber.getParticipantCode());
+                remove(subscriber.getPickeatCode(), subscriber.getParticipantCode());
             }
         });
     }

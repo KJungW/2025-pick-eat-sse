@@ -27,7 +27,7 @@ public class PickeatEventListener implements MessageListener {
             log.info("수신 채널: {}, 메시지: {}", channel, jsonMessage);
 
             PickeatEvent event = objectMapper.readValue(jsonMessage, PickeatEvent.class);
-            subscriberManager.broadcast(event.getMeta().pickeatCode(), event);
+            subscriberManager.broadcastEvent(event.getMeta().pickeatCode(), event);
 
         } catch (Exception e) {
             log.error("메시지 역직렬화 실패: {}", e.getMessage());

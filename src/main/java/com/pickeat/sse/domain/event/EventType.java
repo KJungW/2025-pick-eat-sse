@@ -2,5 +2,5 @@ package com.pickeat.sse.domain.event;
 
 public enum EventType {
 
-    INIT, BUSINESS, ERROR
+    INIT, BUSINESS, HEART_BEAT, ERROR
 }

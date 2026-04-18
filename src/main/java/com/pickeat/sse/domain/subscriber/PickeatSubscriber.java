@@ -53,6 +53,18 @@ public class PickeatSubscriber {
         }
     }
 
+    public void sendHeartbeat() throws IOException {
+        if (!isSending.compareAndSet(false, true)) {
+            return; // 이미 이벤트를 전송 중이면 바로 종료
+        }
+
+        try {
+            sendHeartBeat();
+        } finally {
+            isSending.set(false);
+        }
+    }
+
     public void disconnect() {
         try {
             emitter.complete();
@@ -83,6 +95,22 @@ public class PickeatSubscriber {
         emitter.send(SseEmitter.event()
                 .name(EventType.BUSINESS.toString())
                 .data(event));
+
+        long duration = System.currentTimeMillis() - startTime;
+
+        if (duration > EMITTER_SEND_MILLI_SEC_TIMEOUT) {
+            log.warn("Slow Subscriber 감지: 단일 이벤트 전송에 {}ms 소요. 연결을 강제 종료합니다. [참가자: {}]", duration, participantCode);
+            this.disconnect();
+            throw new IOException("Slow Subscriber Disconnected");
+        }
+    }
+
+    private void sendHeartBeat() throws IOException {
+        long startTime = System.currentTimeMillis();
+
+        emitter.send(SseEmitter.event()
+                .name(EventType.HEART_BEAT.toString())
+                .data("heartbeat"));
 
         long duration = System.currentTimeMillis() - startTime;
 
