@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class HeartbeatScheduler {
 
-    private static final Long SSE_HEARTBEAT_INTERVAL_MILLIS = 45000L;
+    private static final long SSE_HEARTBEAT_INTERVAL_MILLIS = 45000L;
 
     private final PickeatSubscriberManager subscriberManager;
 

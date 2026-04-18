@@ -6,17 +6,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadLocalRandom;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class PickeatSubscriberManager {
 
     private final Map<String, Map<String, PickeatSubscriber>> subscriberStorage = new ConcurrentHashMap<>();
     private final Executor taskExecutor;
+
+    public PickeatSubscriberManager(@Qualifier("virtualThreadExecutor") Executor taskExecutor) {
+        this.taskExecutor = taskExecutor;
+    }
 
     public void register(PickeatSubscriber subscriber) {
         Map<String, PickeatSubscriber> subscriberGroup = subscriberStorage.computeIfAbsent(
