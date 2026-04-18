@@ -12,6 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Slf4j
 public class PickeatSubscriber {
 
+    private static final Long EMITTER_SEND_MILLI_SEC_TIMEOUT = 5000L;
+
     private final String pickeatCode;
     private final String participantCode;
     private final SseEmitter emitter;
@@ -42,9 +44,7 @@ public class PickeatSubscriber {
                     PickeatEvent eventToSend = slot.getAndClear();
 
                     if (eventToSend != null) {
-                        emitter.send(SseEmitter.event()
-                                .name(EventType.BUSINESS.toString())
-                                .data(eventToSend));
+                        sendEvent(eventToSend);
                     }
                 }
             }
@@ -61,10 +61,6 @@ public class PickeatSubscriber {
         }
     }
 
-    private boolean anySlotHasEvent() {
-        return eventSlots.values().stream().anyMatch(slot -> !slot.isEmpty());
-    }
-
     public boolean isNowSending() {
         return isSending.get();
     }
@@ -75,5 +71,25 @@ public class PickeatSubscriber {
 
     public String getParticipantCode() {
         return participantCode;
+    }
+
+    private boolean anySlotHasEvent() {
+        return eventSlots.values().stream().anyMatch(slot -> !slot.isEmpty());
+    }
+
+    private void sendEvent(PickeatEvent event) throws IOException {
+        long startTime = System.currentTimeMillis();
+
+        emitter.send(SseEmitter.event()
+                .name(EventType.BUSINESS.toString())
+                .data(event));
+
+        long duration = System.currentTimeMillis() - startTime;
+
+        if (duration > EMITTER_SEND_MILLI_SEC_TIMEOUT) {
+            log.warn("Slow Subscriber 감지: 단일 이벤트 전송에 {}ms 소요. 연결을 강제 종료합니다. [참가자: {}]", duration, participantCode);
+            this.disconnect();
+            throw new IOException("Slow Subscriber Disconnected");
+        }
     }
 }
