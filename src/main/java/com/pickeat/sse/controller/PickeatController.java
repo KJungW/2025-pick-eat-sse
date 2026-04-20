@@ -39,7 +39,6 @@ public class PickeatController {
     public void disconnect(
             @ParticipantInPickeat ParticipantPrincipal principal
     ) {
-        String participantCode = principal.participantCode();
         subscriberManager.remove(principal.pickeatCode(), principal.participantCode());
     }
 

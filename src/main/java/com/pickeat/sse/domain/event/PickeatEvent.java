@@ -22,4 +22,8 @@ public class PickeatEvent {
     public String getEventGroup() {
         return meta.group();
     }
+
+    public Long getSequence() {
+        return meta.groupSequence();
+    }
 }

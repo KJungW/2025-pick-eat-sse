@@ -3,6 +3,7 @@ package com.pickeat.sse.domain.subscriber;
 import com.pickeat.sse.domain.event.PickeatEvent;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadLocalRandom;
@@ -68,6 +69,12 @@ public class PickeatSubscriberManager {
                 processSendHeartBeat(subscriber);
             }
         }
+    }
+
+    public int getSubscriberCountInPickeat(String pickeatCode) {
+        return Optional.ofNullable(subscriberStorage.get(pickeatCode))
+                .map(Map::size)
+                .orElse(0);
     }
 
     private void processSendEvent(String pickeatCode, String participantCode, PickeatSubscriber subscriber) {

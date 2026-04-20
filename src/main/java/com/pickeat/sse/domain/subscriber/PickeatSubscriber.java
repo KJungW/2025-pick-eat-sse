@@ -28,7 +28,7 @@ public class PickeatSubscriber {
 
     public void registerEvent(PickeatEvent event) {
         String eventGroup = event.getEventGroup();
-        eventSlots.computeIfAbsent(eventGroup, k -> new EventSlot()).update(event);
+        eventSlots.computeIfAbsent(eventGroup, k -> new EventSlot()).replaceWithLatest(event);
     }
 
     public void sendAllEventsUntilEmpty() throws IOException {

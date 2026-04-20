@@ -7,8 +7,13 @@ public class EventSlot {
 
     private final AtomicReference<PickeatEvent> slot = new AtomicReference<>();
 
-    public void update(PickeatEvent event) {
-        slot.set(event);
+    public void replaceWithLatest(PickeatEvent newEvent) {
+        slot.updateAndGet(currentEvent -> {
+            if (currentEvent == null || newEvent.getSequence() > currentEvent.getSequence()) {
+                return newEvent;
+            }
+            return currentEvent;
+        });
     }
 
     public PickeatEvent getAndClear() {
