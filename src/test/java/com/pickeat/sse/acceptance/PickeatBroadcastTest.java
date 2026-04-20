@@ -95,7 +95,6 @@ public class PickeatBroadcastTest extends AcceptanceTest {
                 () -> assertThat(results).anyMatch(line -> line.contains("Message 9")), // 최신 메세지 전송 보장
                 () -> assertThat(businessEventCount).isLessThan(messageCount) // 최신 버전이 아닌 메세지는 일부 생략됨
         );
-        System.out.println(businessEventCount);
     }
 
     private void publishEvent(String pickeatCode, Long sequence, String message) throws JsonProcessingException {
