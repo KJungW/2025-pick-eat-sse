@@ -1,13 +1,12 @@
 package com.pickeat.sse;
 
+import com.pickeat.sse.support.AcceptanceTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class SseApplicationTests {
+class SseApplicationTests extends AcceptanceTest {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
