@@ -2,6 +2,7 @@ package com.pickeat.sse.global.configuration;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
+import io.micrometer.java21.instrument.binder.jdk.VirtualThreadMetrics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -79,5 +80,10 @@ public class MetricsConfig {
                         }
                     }));
         };
+    }
+
+    @Bean
+    public VirtualThreadMetrics virtualThreadMetrics() {
+        return new VirtualThreadMetrics();
     }
 }
