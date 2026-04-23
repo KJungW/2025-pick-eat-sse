@@ -49,7 +49,7 @@ public class PickeatDisconnectionTest extends AcceptanceTest {
                     .when()
                     .delete("/api/v1/pickeats")
                     .then()
-                    .statusCode(HttpStatus.OK.value());
+                    .statusCode(HttpStatus.NO_CONTENT.value());
 
             // then
             await()

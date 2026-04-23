@@ -61,7 +61,7 @@ public class PickeatBroadcastTest extends AcceptanceTest {
     }
 
     @Test
-    void WW_전략에_따라_대기_중인_이벤트는_최신_이벤트로_대체되어_전송된다() {
+    void LWW_전략에_따라_대기_중인_이벤트는_최신_이벤트로_대체되어_전송된다() {
         // given
         String pickeatCode = "PICKEAT_LWW";
         String token = tokenUtility.createToken("PARTICIPANT", pickeatCode);

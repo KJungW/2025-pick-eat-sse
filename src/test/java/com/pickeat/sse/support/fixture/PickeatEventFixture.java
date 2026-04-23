@@ -14,7 +14,7 @@ public class PickeatEventFixture {
     }
 
     public static PickeatEvent createEvent(String pickeatCode, Long sequence, String content) {
-        EventMeta eventMeta = new EventMeta("GROUP_1", 1L, "ACTION_1", pickeatCode, System.currentTimeMillis());
+        EventMeta eventMeta = new EventMeta("GROUP_1", sequence, "ACTION_1", pickeatCode, System.currentTimeMillis());
         return new PickeatEvent(eventMeta, objectMapper.createObjectNode().put("message", content));
     }
 }
