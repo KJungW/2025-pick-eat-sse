@@ -7,6 +7,7 @@ import com.pickeat.sse.global.auth.participant.ParticipantInPickeat;
 import com.pickeat.sse.global.auth.participant.ParticipantPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,10 +37,11 @@ public class PickeatController {
     }
 
     @DeleteMapping(value = "/pickeats")
-    public void disconnect(
+    public ResponseEntity<Void> disconnect(
             @ParticipantInPickeat ParticipantPrincipal principal
     ) {
         subscriberManager.remove(principal.pickeatCode(), principal.participantCode());
+        return ResponseEntity.noContent().build();
     }
 
     private SseEmitter createEmitter(String pickeatCode, String participantCode) {
