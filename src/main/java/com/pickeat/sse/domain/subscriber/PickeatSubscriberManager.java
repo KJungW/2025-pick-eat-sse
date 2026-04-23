@@ -105,7 +105,6 @@ public class PickeatSubscriberManager {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (IOException | IllegalStateException e) {
-                log.warn("하트 비트 실패로 인한 커넥션 드롭: [참가자: {}]", subscriber.getParticipantCode());
                 remove(subscriber.getPickeatCode(), subscriber.getParticipantCode());
             }
         });
