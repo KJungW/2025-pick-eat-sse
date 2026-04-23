@@ -4,7 +4,8 @@ public record EventMeta(
         String group,
         Long groupSequence,
         String action,
-        String pickeatCode
+        String pickeatCode,
+        long publishedAt
 ) {
 
 }
