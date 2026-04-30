@@ -17,6 +17,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -137,6 +138,11 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
         problemDetail.setDetail("잘못된 multipart/form-data 요청입니다. 요청 형식이나 업로드할 파일의 크기를 다시 확인해주세요.");
         return problemDetail;
+    }
+
+    @ExceptionHandler(AsyncRequestNotUsableException.class)
+    public void handleAsyncNotUsable(AsyncRequestNotUsableException e) {
+        // 클라이언트 연결 끊김 무시
     }
 
     @ExceptionHandler(Exception.class)
